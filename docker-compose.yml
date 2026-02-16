@@ -1,0 +1,74 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'    # AMQP protocol
+      - '15672:15672'  # web interface
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  db:
+    image: postgres:15
+    container_name: microservice-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sample
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+      - db
+    environment:
+      PORT: 3002
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: sample
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    container_name: order-service
+    depends_on:
+      - rabbitmq
+      - db
+
+  notification-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    depends_on:
+      - rabbitmq
+      - db
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: nest-pgadmin4new
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
