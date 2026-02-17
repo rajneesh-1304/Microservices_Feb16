@@ -30,15 +30,14 @@ services:
     ports:
       - "3002:3002"
     depends_on:
-      - rabbitmq
       - db
     environment:
-      PORT: 3002
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_NAME: sample
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
 
   order-service:
     build:
@@ -46,7 +45,6 @@ services:
       dockerfile: Dockerfile
     container_name: order-service
     depends_on:
-      - rabbitmq
       - db
 
   notification-service:
@@ -55,7 +53,6 @@ services:
       dockerfile: Dockerfile
     container_name: notification-service
     depends_on:
-      - rabbitmq
       - db
 
   pgadmin:
