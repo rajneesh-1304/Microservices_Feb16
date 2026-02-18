@@ -18,8 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "dispatch-messages": "node dist/dispatch.bootstrap.js",
-    "handle-messages": "node dist/consumer.bootstrap.js",
+    "dispatch-messages": "node dist/bootstrap/dispatch.bootstrap.js",
+    "handle-messages": "node dist/bootstrap/consumer.bootstrap.js",
     "dispatch": "ts-node src/bootstrap/dispatch.bootstrap.ts",
     "handle": "ts-node src/bootstrap/consumer.bootstrap.ts"
   },

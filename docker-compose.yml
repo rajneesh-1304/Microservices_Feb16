@@ -54,6 +54,14 @@ services:
     container_name: notification-service
     depends_on:
       - db
+    environment:
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+      RABBITMQ_URL: ${RABBITMQ_URL}
 
   pgadmin:
     image: dpage/pgadmin4
