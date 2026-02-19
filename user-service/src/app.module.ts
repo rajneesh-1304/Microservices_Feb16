@@ -2,10 +2,9 @@ import { Module, Controller, Get } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { Outbox } from './outbox/outbox.entity';
 import { AppController } from './app.controller';
 import { MessagingModule } from './messaging/messaging.module';
-import { OutboxService } from './services/outbox.service';
+import { Inbox } from './inbox/inbox.entity';
 
 @Module({
   imports: [
@@ -22,7 +21,7 @@ import { OutboxService } from './services/outbox.service';
         database: config.get<string>('DB_NAME'),
         synchronize: false,
         logging: true,
-        entities: [Outbox],
+        entities: [Inbox],
         autoLoadEntities: true,
       }),
     }),
@@ -30,6 +29,6 @@ import { OutboxService } from './services/outbox.service';
 
   ],
   controllers: [AppController],
-  providers: [AppService, OutboxService],
+  providers: [AppService],
 })
 export class AppModule {}

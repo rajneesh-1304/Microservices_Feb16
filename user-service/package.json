@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "startt": "ts-node src/mainn.ts",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -18,10 +19,13 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "dispatch-messages": "node dist/bootstrap/dispatch.bootstrap.js",
     "handle-messages": "node dist/bootstrap/consumer.bootstrap.js",
-    "dispatch": "ts-node src/bootstrap/dispatch.bootstrap.ts",
-    "handle": "ts-node src/bootstrap/consumer.bootstrap.ts"
+    "handle": "ts-node src/bootstrap/consumer.bootstrap.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- migration:generate src/migrations/InitMigration -d src/data-source.ts",
+    "migration:run": "npm run typeorm -- migration:run -d src/data-source.ts",
+    "migration:create": "npm run typeorm -- migration:create src/migrations/CreateUsersTable",
+    "migration:revert": "npx typeorm migration:revert -d src/app.module.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.13",
@@ -32,6 +36,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^0.10.9",
+    "nest-commander": "^3.20.1",
     "pg": "^8.18.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",

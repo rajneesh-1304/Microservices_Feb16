@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { RabbitConnection } from './rabbit.connection';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class PublisherService {
   constructor(private readonly rabbit: RabbitConnection) {}
 
   async publish(message: any) {
-    const conn = await this.rabbit.connect(process.env.RABBITMQ_URL);
-    const channel = await conn.createChannel();
+    const channel = await this.rabbit.connect(process.env.RABBITMQ_URL);
+    
 
     await channel.assertExchange('orders.fanout', 'fanout', { durable: true });
     channel.publish(
@@ -18,7 +17,9 @@ export class PublisherService {
       { persistent: true }
     );
 
-    console.log('Published:', message.id);
-    await channel.close();
+    const q = await channel.assertQueue('orders.queue', { durable: true });
+    await channel.bindQueue(q.queue, 'orders.fanout', '');
+
+    console.log('Published Message Id:', message);
   }
 }

@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { RabbitConnection } from './rabbit.connection';
-import { PublisherService } from './publisher.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConsumerService } from './consumer.service';
+import { RabbitConnection } from './rabbit.connection';
+import { Inbox } from '../inbox/inbox.entity';
 
 @Module({
-  imports: [],
-  providers: [
-    RabbitConnection,
-    PublisherService,
-    ConsumerService, 
+  imports: [
+    TypeOrmModule.forFeature([Inbox]), 
   ],
-  exports: [PublisherService, ConsumerService],
+  providers: [ConsumerService, RabbitConnection],
+  exports: [ConsumerService],
 })
 export class MessagingModule {}

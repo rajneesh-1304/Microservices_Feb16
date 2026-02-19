@@ -38,6 +38,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
+      RABBITMQ_URL: ${RABBITMQ_URL}
 
   order-service:
     build:

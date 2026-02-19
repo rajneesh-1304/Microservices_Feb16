@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
+import { DataSource } from "typeorm";
 import { Outbox } from "../outbox/outbox.entity";
 
 @Injectable()
